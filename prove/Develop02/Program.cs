@@ -84,42 +84,51 @@ class Program
 
 
     }
-    static void Check_and_create_file(string path, string filepath)
+    static List<string> structure_data(Entry i)
     {
-        List<string> headers;
-        headers = ["Date","Question","Answer","Screen Time","Sleep hours","Calories","Rating"];
+        // takes Entry and writes all the atributes in an array
+        List<string> data = new List<string>();
+
+        data.Add(i._date);
+        data.Add(i._questionOfTheDay);
+        data.Add(i._Answer);
+        data.Add(i._screenTime.ToString());
+        data.Add(i._sleepHours.ToString());
+        data.Add(i._cal.ToString());
+        data.Add(i._rating.ToString());
+
+        return data;
 
 
-        var p = new Journal() {_filepath = filepath, _name = path , _headers = headers};
 
+    }
+    static void Create_formated_file(string filepath, Journal journal) 
+    {
+        
 
-        if (!File.Exists(p._filepath + p._name + ".csv"))
+        // check if file exists
+        if (!File.Exists(filepath))
         {
-            
-            Console.WriteLine("Journal creating at:" + p._filepath);
+            // if it doesnt it will ask where to create new journal
+            Console.WriteLine("Journal creating at:" + filepath);
             Console.WriteLine("Would you like to change the Journal's path? (y/n)");
 
             if (Console.ReadLine() == "y")
             {
                 Console.WriteLine("Type desired path");
-
-                p._filepath = Console.ReadLine();
-
-            }
-
-                using (StreamWriter outputFile = new StreamWriter(p._filepath + "/" + p._name + ".csv"))
-            {
-               foreach(string k2 in p._headers)
-            {
-                
-                outputFile.Write($"{k2},");
+                // user defined new path to create journal
+                filepath = $"{Console.ReadLine()}/{journal._name}.csv";
 
             }
-                outputFile.WriteLine();
-            }
 
 
-            Console.WriteLine("Journal created at: " + p._filepath + "/" + p._name + ".csv");
+
+
+            //write down Journal's headers
+            Write_data(filepath,journal._headers);
+
+
+            Console.WriteLine("Journal created at: " + filepath);
         }
         else
         {
@@ -127,6 +136,25 @@ class Program
             
 
         }
+
+
+
+
+    }
+    static void Check_and_create_file(string path, string filepath)
+    {
+        List<string> headers;
+        // create journal instance
+
+        headers = ["Date","Question","Answer","Screen Time","Sleep hours","Calories","Rating"];
+        // define the headers for the excel sheet
+
+        var p = new Journal() {_filepath = filepath, _name = path , _headers = headers};
+        //  Define all the atributes of the journal instance
+
+
+        Create_formated_file($"{p._filepath}/{p._name}.csv", p);
+        
 
     }
     static string List_journals(string path)
@@ -192,7 +220,43 @@ class Program
         }
 
     }
+    static void Write_data(string filepath, List<string> content)
+    {
+        
 
+
+        using (StreamWriter outputFile = new StreamWriter(filepath, true))
+        {
+                
+               foreach(string k2 in content)
+            {
+                
+                outputFile.Write($"{k2},");
+
+            } outputFile.WriteLine();
+        }
+
+
+
+
+
+    }
+    static string prompt_for_filepath(string path)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("What path would you like to look for journals?");
+        Console.WriteLine("Type 1 for Default: " + path);
+        var k = Console.ReadLine();
+        Console.ResetColor();
+
+        if (k != "1")
+        {
+            path = k;
+        }
+
+        return path;
+
+    }
 
 #endregion 
 
@@ -241,68 +305,31 @@ class Program
         Console.WriteLine("(3) Read records");
         Console.ResetColor();
         return int.Parse(Console.ReadLine());
-
+        // take user to states
 
     }
 
     static int writting_state(List<string> x, string path)
     {
-
+        
+        Entry i = new Entry(); // create instance of entry
         string write_on;
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("What path would you like to look for journals?");
-        Console.WriteLine("Type 1 for Default: " + path);
-        var k = Console.ReadLine();
+        path = prompt_for_filepath(path); //find repository to look for journals
+        write_on = List_journals(path); //find which journal to write on
 
 
-        if (k != "1")
-        {
-            path = k;
-        }
-
-
-        write_on = List_journals(path); //retuns path of journal
-
-        if (write_on == "0" || write_on == "1"){
+        // in case there is no file in repository it will direct user to create journal state
+        if (write_on == "0" || write_on == "1"){ 
             
 
             return int.Parse(write_on);
 
-        }
-
-
-        Entry i = new Entry();
-
-        i =  Run_day(x);
-        List<string> data = new List<string>();
-
-        data.Add(i._date);
-        data.Add(i._questionOfTheDay);
-        data.Add(i._Answer);
-        data.Add(i._screenTime.ToString());
-        data.Add(i._sleepHours.ToString());
-        data.Add(i._cal.ToString());
-        data.Add(i._rating.ToString());
-
-
-
-        using (StreamWriter outputFile = new StreamWriter(write_on, true))
-            {
-                
-               foreach(string k2 in data)
-            {
-                
-                outputFile.Write($"{k2},");
-
-            } outputFile.WriteLine();
-            }
-
-
-
+        } 
         
 
+        i =  Run_day(x); //run through all the prompts and store answers in a entry
+        Write_data(write_on,structure_data(i)); // write in file (write_on) and structure data of an entry into an array
 
-        Console.ResetColor();
         return 0;
 
 
@@ -311,6 +338,7 @@ class Program
     static int Create_Journal(string path)
     {
         Console.WriteLine("Name your new Journal:");
+
         var i = Console.ReadLine();
 
         Check_and_create_file(i,path);
