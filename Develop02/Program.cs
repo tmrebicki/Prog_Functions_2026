@@ -154,7 +154,7 @@ class Program
         
         var check = "bruh";
 
-        Console.WriteLine("In which journal would you like to write?");
+        Console.WriteLine("In which journal would you like to select?");
         Console.WriteLine("Journals in " + path);
         var l = 0;
 
@@ -240,6 +240,29 @@ class Program
     }
 
 #endregion 
+
+ public class Journal
+    {
+        public string _filepath;
+
+        public string _name;
+        
+        public List<string> _headers;
+
+    }
+
+public class Entry
+    {
+
+        public string _date;
+        
+        public string _questionOfTheDay,_Answer;
+
+        public int _rating,_cal,_sleepHours,_screenTime;
+
+    }
+
+
 
 #region State machine
 
@@ -353,6 +376,7 @@ class Program
             }else if (state ==3) // read records 
             {
                 string JournalManager = List_journals(path);
+                
                 if (JournalManager != "0" && JournalManager != "1")
                 {
                     state = reading_state(JournalManager);
@@ -360,6 +384,7 @@ class Program
                 else
                 {
                     Console.WriteLine("No selected journal");
+                    state = 1;
                 }
 
             }
@@ -370,83 +395,3 @@ class Program
 
 }
 
-// using System;
-// using System.Data;
-// using System.Runtime.CompilerServices;
-
-// //nouns: jounal, entry, date, file, menu, prompts, response (journal/entry- classes) prompts- attribute on entry, date- atribute on journal
-// //journal: file path, menu
-// //entry: prompts, response, date
-// class Program2
-// {
-
-//     public void WriteToFile(string journal_file)
-//     //journal.writetofile
-//     {
-//         using (StreamWriter outputFile = new StreamWriter(journal_file))
-//         {
-//             foreach(JournalEntry entry in entries)
-//             {
-//                 outputFile.WriteLine(entry.CreateFileSystemString());
-//             }
-//         }
-//     }
-    
-//     public void ReadFromFile(string journal_file)
-//     {
-//         string[] lines = System.IO.File.ReadAllLines(journal_file);
-
-//         foreach (string line in lines)
-//         {
-//             string [] parts = line.Split("#");
-
-//             string date = parts[0];
-//             string question = parts[1];
-//             string entryText = parts[2];
-
-//             JournalEntry entry = new JournalEntry();
-//             entry.CreateEntryWithData(date)
-//         }
-//     }
-//     public string CreateFileSystemString()
-//     {
-//         string outputString = "";
-//         outputString = $"{_date}#{_entryQuestion}#{_journalEntry}";
-//         return outputString;
-//     }
-//     //how started
-//     public static void Main(string[] args)
-//     {
-//         Menu menu = new Menu();
-//         bool done = false;
-//         int userResponse;
-//         do
-//         {
-//             userResponse = menu.ProcessMenu();
-//             switch(userResponse)
-//             {
-//                 case 1:
-//                 //creates and adds entry to list of journal entries
-//                 break;
-//                 case 2:
-//                 //displays jounral entries
-//                 break;
-//                 case 3:
-//                 //save journal to file
-//                 break;
-//                 case 4:
-//                 //load journal from file
-//                 break;
-//                 case 5:
-//                     done = true;
-//                     break;
-
-//             }
-//             if (userResponse == 5)
-//             {
-//                 done = true;
-//             }
-//         } while(!done);
-       
-//     }
-// }
