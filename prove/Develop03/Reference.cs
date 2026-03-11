@@ -4,10 +4,11 @@ using System.Threading.Channels;
 class Reference
 {
    
-    public string _book, _chapter, _Reference;
-    public List<string> _words;
+    private string _book, _chapter, _verses, _text;
 
-    public string _text;
+    private List<string> _words;
+
+    public List<string> _data; 
 
 
     public Reference(int number)
@@ -17,14 +18,18 @@ class Reference
         data = Get_Scripture(number);
         _book = data[0];
         _chapter = data[1];
-        _Reference = data[2];
+        _verses = data[2];
         List<string > words= new List<string>( data[3].Split(' '));
         _words = words;
         _text = data[3];
+        _data = data.ToList();
 
 
     }
-    public static string[] Get_Scripture(int number)
+
+
+
+    private static string[] Get_Scripture(int number)
     {
 
 

@@ -22,8 +22,6 @@ class Program
 
         return ans_qst;
 
-
-
     }
     static int Prompt_rating()
     {
@@ -35,7 +33,7 @@ class Program
     static int Prompt_screentime()
     {
         
-        Console.WriteLine("What was your screentime today?");
+        Console.WriteLine("What was your screentime today in hours?");
         return int.Parse(Console.ReadLine());
 
     }
@@ -121,9 +119,6 @@ class Program
 
             }
 
-
-
-
             //write down Journal's headers
             Write_data(filepath,journal._headers);
 
@@ -136,9 +131,6 @@ class Program
             
 
         }
-
-
-
 
     }
     static void Check_and_create_file(string path, string filepath)
@@ -162,7 +154,7 @@ class Program
         
         var check = "bruh";
 
-        Console.WriteLine("In which journal would you like to write?");
+        Console.WriteLine("In which journal would you like to select?");
         Console.WriteLine("Journals in " + path);
         var l = 0;
 
@@ -177,7 +169,7 @@ class Program
                 Console.WriteLine( "(" + l + ")   " + Path.GetFileName(file));
 
                 l +=1;
-            }            Console.WriteLine("Which one would you like to write on?");
+            }            Console.WriteLine("Which one would you like to read?");
 
 
             check = journals[int.Parse(Console.ReadLine())];
@@ -199,10 +191,6 @@ class Program
             }        
         }        
         
-        
-        
-        
-        
         if (File.Exists(check))
         {
         
@@ -223,11 +211,8 @@ class Program
     static void Write_data(string filepath, List<string> content)
     {
         
-
-
         using (StreamWriter outputFile = new StreamWriter(filepath, true))
         {
-                
                foreach(string k2 in content)
             {
                 
@@ -235,10 +220,6 @@ class Program
 
             } outputFile.WriteLine();
         }
-
-
-
-
 
     }
     static string prompt_for_filepath(string path)
@@ -260,9 +241,17 @@ class Program
 
 #endregion 
 
-#region Object
+ public class Journal
+    {
+        public string _filepath;
 
-    public class Entry
+        public string _name;
+        
+        public List<string> _headers;
+
+    }
+
+public class Entry
     {
 
         public string _date;
@@ -271,27 +260,9 @@ class Program
 
         public int _rating,_cal,_sleepHours,_screenTime;
 
-
-
     }
 
-    public class Journal
-    {
-        public string _filepath;
 
-        public string _name;
-        
-        public List<string> _headers;
-
-
-
-
-
-    }
-
-    
-
-#endregion
 
 #region State machine
 
@@ -301,7 +272,7 @@ class Program
         Console.WriteLine("Welcome to the journal program!");
         Console.WriteLine("Would you like to:");
         Console.WriteLine("(1) Create a new journal");
-        Console.WriteLine("(2) Write in an exisitng journal");
+        Console.WriteLine("(2) Write in an existing journal");
         Console.WriteLine("(3) Read records");
         Console.ResetColor();
         return int.Parse(Console.ReadLine());
@@ -309,7 +280,21 @@ class Program
 
     }
 
-    static int writting_state(List<string> x, string path)
+    static int reading_state(string path)
+    {
+        
+        using (StreamReader reader = new StreamReader(path))
+        {
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                Console.WriteLine(line);
+            }
+        }
+        return 0;
+    }
+
+    static int writing_state(List<string> x, string path)
     {
         
         Entry i = new Entry(); // create instance of entry
@@ -330,6 +315,8 @@ class Program
         i =  Run_day(x); //run through all the prompts and store answers in a entry
         Write_data(write_on,structure_data(i)); // write in file (write_on) and structure data of an entry into an array
 
+        Console.Out.Flush(); //ensures that everything is written, closes write so it can be read.
+
         return 0;
 
 
@@ -348,13 +335,6 @@ class Program
 
     }
 
-
-
-
-
-
-
-
 #endregion
 
     static void Main(string[] args)
@@ -362,11 +342,11 @@ class Program
 
         List<string> _qtns = new List<string>();
 
-        _qtns.Add("Q1");
-        _qtns.Add("Q2");
-        _qtns.Add("Q3");
-        _qtns.Add("Q4");
-        _qtns.Add("Q5");
+        _qtns.Add("Q1: Where have you seen God today?");
+        _qtns.Add("Q2: What was your favorite part of today?");
+        _qtns.Add("Q3: Where did you see your favorite color today?");
+        _qtns.Add("Q4: What's something you don't want to forget about today?");
+        _qtns.Add("Q5: What made you smile today?");
 
         int state = 0;
 
@@ -374,7 +354,7 @@ class Program
 
 
 
-        while (state < 3)
+        while (state <= 3)
         {
         
 
@@ -390,30 +370,29 @@ class Program
             }else if (state == 2) // write journal
             {
              
-                state = writting_state(_qtns,path);
+                state = writing_state(_qtns,path);
 
 
             }else if (state ==3) // read records 
             {
+                string JournalManager = List_journals(path);
                 
+                if (JournalManager != "0" && JournalManager != "1")
+                {
+                    state = reading_state(JournalManager);
+                }
+                else
+                {
+                    Console.WriteLine("No selected journal");
+                    state = 1; //done
+                    var ol = 7;
+                }
 
             }
+
         }
 
-
-
-
-
-
-
-
-
-
-        
     }
 
-
-
-
-
 }
+
