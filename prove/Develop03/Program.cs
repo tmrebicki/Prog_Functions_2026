@@ -22,7 +22,7 @@ class Program
     {
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("Guess the words words");
+    
 
         var total_lines = 6586;
 
@@ -38,6 +38,7 @@ class Program
 
         var loop = true;
         while (loop) {
+            Console.WriteLine("Guess the words words");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Type a word. Press 1 to exit");
             Console.ResetColor();

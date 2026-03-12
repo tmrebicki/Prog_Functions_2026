@@ -65,12 +65,6 @@ class Reference
 
 
     }
-
-
-
-
-
-
     private static string[] Get_Scripture(int number)
     {   
         var _total_lines = 6586;
@@ -87,7 +81,7 @@ class Reference
         }
 
         
-        using (var reader = new StreamReader("C:/Users/tmreb/OneDrive - BYU-Idaho/Prog with Func/Prog_Functions_2026/prove/Develop03/bom.csv"))
+        using (var reader = new StreamReader("../../../bom.csv"))
         {
 
             while (number > 1)
@@ -112,7 +106,6 @@ class Reference
 
 
     }
-
     public static void unhide_word(string word, Reference p)
     {
         
