@@ -79,6 +79,9 @@ class ActBreathing : Activity
 
         display_Description();
 
+        Get_Streak();
+        Thread.Sleep(1000);
+
         Console.WriteLine("How many times would you like to repeat?");
 
         var p = int.Parse(Console.ReadLine());

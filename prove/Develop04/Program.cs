@@ -40,6 +40,7 @@ class Program
         Console.WriteLine("(1) Start breathing exercise.");
         Console.WriteLine("(2) Start reflection exercise.");
         Console.WriteLine("(3) Start Listing exercise");
+        Console.WriteLine("(4) Exit");
 
     }
 
@@ -81,6 +82,17 @@ class Program
                 state =0;
             break;
 
+            case 4:
+            Console.Clear();
+            Console.WriteLine("Hello world");
+            Thread.Sleep(600);
+            Console.Clear();
+            Console.WriteLine("I mean");
+            Thread.Sleep(400);
+            Console.Clear();
+            Console.WriteLine("Goodbye world");
+            state = 256789;
+            break;
 
 
 
