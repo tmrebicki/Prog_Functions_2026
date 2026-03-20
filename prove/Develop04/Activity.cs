@@ -6,7 +6,8 @@ using System.Globalization;
 class Activity
 {
     private string _name, _date;
-
+    private int _duration;
+    private DateTime _endTime; 
     private string _nameMessage, _description;
 
 
@@ -16,6 +17,7 @@ class Activity
         _name = name;
         _nameMessage = nameMessage;
         _description = description;
+        _duration = 0;
 
         DateTime now = DateTime.Now;
         string date = now.ToShortDateString();
@@ -30,7 +32,7 @@ class Activity
             using (StreamWriter outputFile = new StreamWriter(_name +".csv", true))
                 {
             
-                    outputFile.Write($" Date, Breathing activity, Reflection activity, Listing activity, Streak");
+                    outputFile.Write($"{_date}, Breathing activity, Reflection activity, Listing activity, Streak");
 
                     
                     outputFile.WriteLine();
@@ -138,11 +140,11 @@ class Activity
             var lines = File.ReadAllLines(_name + ".csv");
 
 
-        DateTime? previousDate = null;
+            DateTime? previousDate = null;
             foreach (var line in lines.Skip(1)) 
         {
             var parts = line.Split(',');
-
+            
             DateTime date = DateTime.Parse(parts[0], new CultureInfo("en-US"));
 
             bool isActive = parts.Skip(1).Any(x => x == "1");
@@ -175,7 +177,7 @@ class Activity
 
 
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"Max streak: {maxStreak}");
+        Console.WriteLine($"Current daily streak: {maxStreak}");
         Console.ResetColor();
     }
 
@@ -216,17 +218,64 @@ class Activity
     public void Timer(int time_in_seconds)
     {
         var secs = time_in_seconds * 1000;
-
+        Console.WriteLine();
         for (int i = secs; i > -1; i--){
 
         Thread.Sleep(1000);
-        Console.Clear();
-        Console.WriteLine($"{i}");
+
+                Console.Write("\\"); 
+                Thread.Sleep(i);
+                Console.Write("\b \b");
         }
 
-        Console.Clear();
+
 
 
     }
 
+
+    public void Greeting()
+    {
+        Console.WriteLine($"Welcome to the {_name} activity.");
+        Console.Write("How long do you want your session to go for?");
+        _duration = int.Parse(Console.ReadLine());
+    }
+
+    public void Description()
+    {
+        Console.WriteLine(_description);
+    }
+
+    public void StartTimer()
+    {
+        _endTime = DateTime.Now.AddSeconds(_duration);
+    }
+
+    public bool HasTimerExpired()
+    {
+        return DateTime.Now > _endTime;
+    }
+    
+    public void DisplaySpinner(string message, int seconds)
+    {
+        DateTime currentTime = DateTime.Now;
+        DateTime endTime = currentTime.AddSeconds(seconds);
+        int sleepTime = 100;
+        string animationString = "-\\|/-";
+        int index = 0;
+
+        Console.CursorVisible = false;
+        //Console.Clear();      
+
+        Console.Write($"{message} ");
+
+        while(DateTime.Now < endTime)
+        {
+            Console.Write(animationString[index++ % animationString.Length]);
+            Thread.Sleep(sleepTime);
+            Console.Write("\b");
+        }
+
+        Console.CursorVisible = true;
+    }
 }

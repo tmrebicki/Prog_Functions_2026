@@ -20,8 +20,8 @@ class Program
     public static void Listing_State(string name)
     {
         
-        //ActivityListing a1 = new ActivityListing(name);
-        //a1.run_Listing();
+        ListingActivity a1 = new ListingActivity(name);
+        a1.RunActivity();
 
 
     }
@@ -53,7 +53,7 @@ class Program
 
         var state = 0;
 
-        while (state != 3){
+        while (state < 10000){
 
             switch (state)
             {
@@ -78,6 +78,7 @@ class Program
             break;
 
             case 3:
+
                 Listing_State(name);
                 state =0;
             break;

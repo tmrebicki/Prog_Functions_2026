@@ -55,13 +55,13 @@ class ActBreathing : Activity
             Console.WriteLine($"Breathe out ...{i}");
 
             }
-
-            if (repeat == 0)
+            re -=1;
+            if (re == 0)
             {
                 loop = false;
 
             }
-            re -=1;
+            
             secs = sec;
 
             }
