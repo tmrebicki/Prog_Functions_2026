@@ -4,6 +4,14 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello FinalProject World!");
+        Console.Clear();
+
+
+        Console.CursorVisible = false;
+
+        Game game = new Game(10, 25);
+        game.Run();
+
+
     }
 }
