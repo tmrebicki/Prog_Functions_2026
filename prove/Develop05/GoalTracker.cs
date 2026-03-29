@@ -129,12 +129,24 @@ public class GoalTracker
             SimpleQuest quest = new SimpleQuest(goal[2],goal[3],int.Parse(goal[4]));
             _goals.Add(quest);
             }
-            else
+            else if(goal[0] == "EternalQuest") 
             {
             
             EternalQuest quest = new EternalQuest(goal[2],goal[3],int.Parse(goal[4]));
 
             _goals.Add(quest);
+            }
+            else if(goal[0] == "Checklist") 
+            {
+
+                var data = goal[1];
+
+                var pdata = data.Split("/");
+                    
+            CheckList quest = new CheckList(goal[2],goal[3],int.Parse(goal[4]),int.Parse(pdata[0]),int.Parse(pdata[1]));
+        
+            _goals.Add(quest);
+            
             }
 
 

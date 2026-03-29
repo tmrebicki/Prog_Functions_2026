@@ -25,6 +25,7 @@ class Program
         Console.WriteLine("Insert goal type:");
         Console.WriteLine("1. Simple");
         Console.WriteLine("2. Eternal");
+        Console.WriteLine("3. checklist");
 
         string type = Console.ReadLine();
 
@@ -37,6 +38,9 @@ class Program
         Console.Write("How many points is this worth?: ");
         int points = int.Parse(Console.ReadLine());
 
+        Console.Write("If checklist, how many times should it repeat?: ");
+        int rep = int.Parse(Console.ReadLine());
+
         switch (type)
         {
             case "1":
@@ -45,6 +49,10 @@ class Program
 
             case "2":
                 manager.AddGoal(new EternalQuest(name, desc, points));
+            break;
+
+            case "3":
+                manager.AddGoal(new CheckList(name, desc, points, 0 , rep));
             break;
 
             default:
@@ -105,12 +113,31 @@ class Program
 
                 }
             }
-            else
+            else if (bro_data[0] == "EternalQuest")
             {
                 
                 g.RecordEvent(index);
                 Console.WriteLine($"You earned {bro_data[4]} points!");
                 Console.WriteLine($"Total Score: {g.Score}");
+
+
+            } else if (bro_data[0] == "Checklist")
+            {
+                
+                switch (goals[index].Complete()){
+                    
+                    case false:
+                    g.RecordEvent(index);
+                    Console.WriteLine($"Total Score: {g.Score}");
+                    break;
+                    case true:
+                    Console.WriteLine($"Goal has already been met!");
+                    Console.WriteLine($"Total Score: {g.Score}");
+                    break;
+
+                }
+                
+
 
 
             }
