@@ -100,6 +100,9 @@ class Renderer
     public void Draw_All()
     {
         Console.SetCursorPosition(0, 0);
+
+
+
         
         Draw_next();
         _board.Draw_Board();

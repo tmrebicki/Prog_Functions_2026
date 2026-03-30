@@ -33,17 +33,21 @@ class Game
     {
         while (running)
         {
+            
             Handle_speed();
             HandleInput();
             HandleGravity();
             UpdateGameState();
             _render.Draw_All();
-            Console.WriteLine("Score:" + Math.Ceiling(_points) );
+
         }
 
         Console.Clear();
         Console.WriteLine("Game Over");
         Console.WriteLine("Score:" + Math.Ceiling(_points) );
+        Console.WriteLine("Press any key to continue");
+        Console.ReadKey();
+        Console.Clear();
 
     }
 
